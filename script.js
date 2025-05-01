@@ -42,4 +42,59 @@ researchItems.forEach(item => {
     item.style.transform = 'translateY(20px)';
     item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(item);
-}); 
+});
+
+// PDF.js configuration
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+// Get the modal
+const modal = document.getElementById('cvModal');
+const pdfViewer = document.getElementById('pdfViewer');
+const pdfCanvas = document.getElementById('pdfCanvas');
+
+// Get the button that opens the modal
+const cvButton = document.querySelector('.cv-button');
+
+// Get the <span> element that closes the modal
+const span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal and load PDF
+cvButton.onclick = async function() {
+    modal.style.display = "block";
+    try {
+        const loadingTask = pdfjsLib.getDocument('https://drive.google.com/uc?export=view&id=15NXupx79tnCxfh8eSAP9NSijxARKP1YF');
+        const pdf = await loadingTask.promise;
+        const page = await pdf.getPage(1);
+        
+        const viewport = page.getViewport({ scale: 1.5 });
+        const context = pdfCanvas.getContext('2d');
+        pdfCanvas.height = viewport.height;
+        pdfCanvas.width = viewport.width;
+        
+        await page.render({
+            canvasContext: context,
+            viewport: viewport
+        }).promise;
+    } catch (error) {
+        console.error('Error loading PDF:', error);
+        pdfViewer.innerHTML = '<p>Error loading PDF. Please try again later.</p>';
+    }
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+    // Clear the canvas
+    const context = pdfCanvas.getContext('2d');
+    context.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+        // Clear the canvas
+        const context = pdfCanvas.getContext('2d');
+        context.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+    }
+} 

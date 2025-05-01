@@ -6,6 +6,7 @@
     <title>JSRK Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -18,10 +19,11 @@
                 <li><a href="#research">Research</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#bootcamp">Bootcamp</a></li>
+                <li><a href="#certifications">Certifications</a></li>
                 <li><a href="#publications">Publications</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="https://drive.google.com/file/d/15NXupx79tnCxfh8eSAP9NSijxARKP1YF/view?usp=drive_link" class="cv-button" target="_blank">CV</a></li>
+                <li><a href="https://drive.google.com/uc?export=download&id=15NXupx79tnCxfh8eSAP9NSijxARKP1YF" class="cv-button" target="_blank">CV</a></li>
             </ul>
         </div>
     </nav>
@@ -126,6 +128,30 @@
         </div>
     </section>
 
+    <section id="certifications" class="certifications">
+        <h2>Certifications</h2>
+        <div class="certifications-grid">
+            <div class="certification-item" style="background: #8e44ad;">
+                <h3>Certification Title 1</h3>
+                <p>Issuing Organization</p>
+                <p class="certification-date">Date: Month Year</p>
+                <a href="#" class="certification-link">View Certificate</a>
+            </div>
+            <div class="certification-item" style="background: #27ae60;">
+                <h3>Certification Title 2</h3>
+                <p>Issuing Organization</p>
+                <p class="certification-date">Date: Month Year</p>
+                <a href="#" class="certification-link">View Certificate</a>
+            </div>
+            <div class="certification-item" style="background: #d35400;">
+                <h3>Certification Title 3</h3>
+                <p>Issuing Organization</p>
+                <p class="certification-date">Date: Month Year</p>
+                <a href="#" class="certification-link">View Certificate</a>
+            </div>
+        </div>
+    </section>
+
     <section id="publications" class="publications">
         <h2>Publications</h2>
         <div class="publications-list">
@@ -172,6 +198,16 @@
             <p><i class="fas fa-phone"></i> +91 9985688266</p>
         </div>
     </section>
+
+    <!-- CV Modal -->
+    <div id="cvModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="pdfViewer">
+                <canvas id="pdfCanvas"></canvas>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <p>&copy; 2025 JSRK. All rights reserved.</p>
