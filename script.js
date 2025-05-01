@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Optional: Hide menu when a link is clicked (for better UX)
+    // Hide menu when a link is clicked (for better UX)
     navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('show');
