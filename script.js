@@ -97,4 +97,62 @@ window.onclick = function(event) {
         const context = pdfCanvas.getContext('2d');
         context.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
     }
-} 
+}
+
+// CV Preview Modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('cvModal');
+    const btn = document.getElementById('cvPreviewButton');
+    const span = document.getElementsByClassName('close')[0];
+
+    // Open modal
+    btn.onclick = function(e) {
+        e.preventDefault();
+        modal.style.display = 'block';
+    }
+
+    // Close modal with X button
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Hamburger menu functionality
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const menuIcon = mobileMenuBtn.querySelector('i');
+
+    mobileMenuBtn.addEventListener('click', function() {
+        navLinks.classList.toggle('show');
+        // Toggle icon between bars and times
+        if (navLinks.classList.contains('show')) {
+            menuIcon.classList.remove('fa-bars');
+            menuIcon.classList.add('fa-times');
+        } else {
+            menuIcon.classList.remove('fa-times');
+            menuIcon.classList.add('fa-bars');
+        }
+    });
+
+    // Optional: Hide menu when a link is clicked (for better UX)
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('show');
+            menuIcon.classList.remove('fa-times');
+            menuIcon.classList.add('fa-bars');
+        });
+    });
+}); 

@@ -414,10 +414,10 @@ section {
 /* Add subtle transition between sections */
 section::before {
     content: '';
-    position: absolute;
+        position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+        left: 0;
+        right: 0;
     height: 4px;
     background: linear-gradient(to right, transparent, var(--accent-color), transparent);
     opacity: 0.3;
@@ -821,42 +821,85 @@ footer {
 .modal {
     display: none;
     position: fixed;
-    z-index: 2000;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.9);
-    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    position: relative;
-    background-color: var(--white);
-    margin: 2% auto;
+    background-color: #fefefe;
+    margin: 5% auto;
     padding: 20px;
-    width: 90%;
-    height: 90%;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--primary-color);
 }
 
 .close {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    color: var(--text-color);
+    color: #aaa;
+    float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 1;
 }
 
 .close:hover,
 .close:focus {
-    color: var(--accent-color);
+    color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.modal-body {
+    margin-top: 20px;
+}
+
+.modal-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.download-btn {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
 }
 
 /* Certifications Section */
@@ -1182,4 +1225,54 @@ footer {
     }
 }
 
-/* Add to your HTML file */ 
+/* Add to your HTML file */
+
+/* Hide mobile menu button on desktop */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.2rem;
+    z-index: 1100;
+}
+
+/* Mobile styles */
+@media (max-width: 900px) {
+    .nav-content {
+        position: relative;
+    }
+    .mobile-menu-btn {
+        display: block;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        background: var(--primary-color);
+        width: 100%;
+        padding: 1rem 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .nav-links.show {
+        display: flex;
+    }
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+        margin: 0.5rem 0;
+    }
+    .nav-links a {
+        width: 90%;
+        margin: 0 auto;
+        display: block;
+    }
+} 
