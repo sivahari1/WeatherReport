@@ -615,25 +615,184 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    /* Navigation */
     .nav-content {
         flex-direction: column;
-        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .logo {
+        margin-bottom: 1rem;
     }
 
     .nav-links {
-        margin-top: 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
     }
 
-    .nav-links li {
-        margin: 0 1rem;
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 6rem 1rem 2rem;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-image {
+        margin-bottom: 1.5rem;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    /* Activities Section */
+    .activities-marquee {
+        animation: scroll 20s linear infinite;
+    }
+
+    .activity-item {
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+    }
+
+    /* Research Section */
+    .research-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Projects Section */
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Bootcamp Section */
+    .bootcamp-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Publications Section */
+    .publications-list {
+        padding: 0 1rem;
+    }
+
+    .publication-item {
+        padding: 1rem;
+    }
+
+    /* Experience Section */
+    .timeline {
+        padding: 0 1rem;
+    }
+
+    .timeline-item {
+        padding-left: 1rem;
+    }
+
+    /* Contact Section */
+    .contact-info {
+        padding: 1rem;
+    }
+
+    /* Section Titles */
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Activities Section */
+    .activities-container {
+        padding: 0 0.5rem;
+    }
+
+    .activity-item {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Navigation */
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+
+    /* Hero Section */
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero h2 {
+        font-size: 1.2rem;
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    /* Section Titles */
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    /* Activities Section */
+    .activity-item {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .activity-item i {
+        font-size: 1rem;
+    }
+}
+
+/* Landscape Mode for Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .nav-content {
+        flex-direction: row;
+    }
+
+    .nav-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        width: auto;
     }
 
     .hero {
-        padding-top: 12rem;
+        padding-top: 4rem;
+    }
+}
+
+/* Tablet Devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .nav-content {
+        padding: 0.8rem;
     }
 
-    .research-grid {
-        grid-template-columns: 1fr;
+    .hero-content {
+        max-width: 90%;
+    }
+
+    .research-grid,
+    .projects-grid,
+    .bootcamp-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
