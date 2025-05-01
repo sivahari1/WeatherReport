@@ -1233,7 +1233,7 @@ footer {
     background: none;
     border: none;
     font-size: 2rem;
-    color: var(--primary-color);
+    color: var(--primary-color, #2c3e50);
     cursor: pointer;
     position: absolute;
     right: 1.5rem;
@@ -1256,7 +1256,7 @@ footer {
         top: 100%;
         right: 0;
         left: 0;
-        background: var(--primary-color);
+        background: var(--primary-color, #2c3e50);
         width: 100%;
         padding: 1rem 0;
         z-index: 1000;
