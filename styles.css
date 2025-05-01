@@ -1033,4 +1033,153 @@ footer {
 
 .nav-links a[href="#contact"]:hover {
     background: linear-gradient(135deg, #42a5f5, #1e88e5) !important;
-} 
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    /* Navigation */
+    .navbar {
+        padding: 0.5rem;
+    }
+
+    .nav-content {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        display: none; /* Hide by default on mobile */
+    }
+
+    .nav-links.active {
+        display: flex; /* Show when active */
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem;
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+        display: block;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding-top: 6rem;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .profile-image {
+        margin: 0 auto 1rem;
+    }
+
+    /* Section Grids */
+    .research-grid,
+    .projects-grid,
+    .bootcamp-grid,
+    .certifications-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    /* Section Items */
+    .research-item,
+    .project-item,
+    .bootcamp-item,
+    .certification-item,
+    .publication-item,
+    .timeline-content {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+
+    /* Publications */
+    .publications-list {
+        padding: 1rem;
+    }
+
+    .publication-item {
+        margin: 0.5rem auto;
+    }
+
+    /* Timeline */
+    .timeline {
+        padding: 1rem;
+    }
+
+    .timeline-item {
+        margin: 1rem auto;
+    }
+
+    /* Contact */
+    .contact-info {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+
+    /* Section Titles */
+    section h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Text Adjustments */
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero h2 {
+        font-size: 1.3rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Small Mobile Devices */
+@media screen and (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero h2 {
+        font-size: 1.2rem;
+    }
+
+    .contact-info p {
+        font-size: 0.9rem;
+    }
+
+    section {
+        padding: 2rem 1rem;
+    }
+}
+
+/* Add to your HTML file */ 
