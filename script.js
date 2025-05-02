@@ -133,26 +133,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hamburger menu functionality
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
-    const menuIcon = mobileMenuBtn.querySelector('i');
 
-    mobileMenuBtn.addEventListener('click', function() {
-        navLinks.classList.toggle('show');
-        // Toggle icon between bars and times
-        if (navLinks.classList.contains('show')) {
-            menuIcon.classList.remove('fa-bars');
-            menuIcon.classList.add('fa-times');
-        } else {
-            menuIcon.classList.remove('fa-times');
-            menuIcon.classList.add('fa-bars');
-        }
-    });
-
-    // Hide menu when a link is clicked (for better UX)
-    navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('show');
-            menuIcon.classList.remove('fa-times');
-            menuIcon.classList.add('fa-bars');
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('show');
+            mobileMenuBtn.classList.toggle('active');
         });
-    });
-}); 
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('show');
+                mobileMenuBtn.classList.remove('active');
+            });
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+  
+    if (mobileMenuBtn && navLinks) {
+      mobileMenuBtn.addEventListener('click', function() {
+        navLinks.classList.toggle('show');
+        mobileMenuBtn.classList.toggle('active');
+      });
+  
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('show');
+          mobileMenuBtn.classList.remove('active');
+        });
+      });
+    }
+  });

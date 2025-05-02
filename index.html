@@ -9,24 +9,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="logo">
-                <a href="#home">JSRK Profile</a>
+   
+<nav class="navbar">
+    <div class="nav-content">
+      <!-- Hamburger menu button on the left -->
+      <button class="mobile-menu-btn" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+      </button>
+      <div class="logo">
+        <a href="#home">JSRK Profile</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li class="activity-dropdown">
+            <a href="#">Activity</a>
+            <div class="activity-dropdown-content">
+                <div class="academic-submenu">
+                    <a href="#academic">Academic</a>
+                    <div class="academic-submenu-content">
+                        <a href="#teaching">Teaching</a>
+                        <a href="#training">Training</a>
+                    </div>
+                </div>
+                <div class="research-submenu">
+                    <a href="#research">Research</a>
+                    <div class="research-submenu-content">
+                        <a href="#research">Research Activities</a>
+                        <a href="#projects">Projects</a>
+                        <a href="#publications">Publications</a>
+                    </div>
+                </div>
             </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#research">Research</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#bootcamp">Bootcamp</a></li>
-                <li><a href="#certifications">Certifications</a></li>
-                <li><a href="#publications">Publications</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="https://drive.google.com/uc?export=download&id=15NXupx79tnCxfh8eSAP9NSijxARKP1YF" class="cv-button" target="_blank">CV</a></li>
-            </ul>
-        </div>
-    </nav>
+        </li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#" class="cv-button" id="cvPreviewButton">CV</a></li>
+      </ul>
+    </div>
+  </nav>
+  
 
     <section id="home" class="hero">
         <div class="hero-content">
@@ -76,6 +98,96 @@
         </div>
     </section>
 
+    <section id="academic" class="academic">
+        <h2>Academic Activities</h2>
+        <div class="academic-grid">
+            <div class="academic-item">
+                <h3>Teaching</h3>
+                <ul>
+                    <li>Course 1: Description of the course and your role</li>
+                    <li>Course 2: Description of the course and your role</li>
+                    <li>Course 3: Description of the course and your role</li>
+                </ul>
+            </div>
+            <div class="academic-item">
+                <h3>Workshops & Seminars</h3>
+                <ul>
+                    <li>Workshop 1: Description and date</li>
+                    <li>Workshop 2: Description and date</li>
+                    <li>Seminar 1: Description and date</li>
+                </ul>
+            </div>
+            <div class="academic-item">
+                <h3>Academic Achievements</h3>
+                <ul>
+                    <li>Achievement 1: Description and date</li>
+                    <li>Achievement 2: Description and date</li>
+                    <li>Achievement 3: Description and date</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="teaching" class="teaching">
+        <h2>Teaching Activities</h2>
+        <div class="teaching-grid">
+            <div class="teaching-item">
+                <h3>Undergraduate Courses</h3>
+                <ul>
+                    <li>Course 1: Description and semester</li>
+                    <li>Course 2: Description and semester</li>
+                    <li>Course 3: Description and semester</li>
+                </ul>
+            </div>
+            <div class="teaching-item">
+                <h3>Postgraduate Courses</h3>
+                <ul>
+                    <li>Course 1: Description and semester</li>
+                    <li>Course 2: Description and semester</li>
+                    <li>Course 3: Description and semester</li>
+                </ul>
+            </div>
+            <div class="teaching-item">
+                <h3>Teaching Methods</h3>
+                <ul>
+                    <li>Method 1: Description</li>
+                    <li>Method 2: Description</li>
+                    <li>Method 3: Description</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="training" class="training">
+        <h2>Training Programs</h2>
+        <div class="training-grid">
+            <div class="training-item">
+                <h3>Workshops Conducted</h3>
+                <ul>
+                    <li>Workshop 1: Description and date</li>
+                    <li>Workshop 2: Description and date</li>
+                    <li>Workshop 3: Description and date</li>
+                </ul>
+            </div>
+            <div class="training-item">
+                <h3>Faculty Development Programs</h3>
+                <ul>
+                    <li>Program 1: Description and date</li>
+                    <li>Program 2: Description and date</li>
+                    <li>Program 3: Description and date</li>
+                </ul>
+            </div>
+            <div class="training-item">
+                <h3>Industry Training</h3>
+                <ul>
+                    <li>Training 1: Description and organization</li>
+                    <li>Training 2: Description and organization</li>
+                    <li>Training 3: Description and organization</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     <section id="research" class="research">
         <h2>Research Interests</h2>
         <div class="research-grid">
@@ -90,6 +202,36 @@
             <div class="research-item" style="background: #2ecc71;">
                 <h3>Deep learning</h3>
                 <p>Description of your research interests and focus areas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="research" class="research">
+        <h2>Research Activities</h2>
+        <div class="research-grid">
+            <div class="research-item">
+                <h3>Current Research Projects</h3>
+                <ul>
+                    <li>Project 1: Description and status</li>
+                    <li>Project 2: Description and status</li>
+                    <li>Project 3: Description and status</li>
+                </ul>
+            </div>
+            <div class="research-item">
+                <h3>Research Collaborations</h3>
+                <ul>
+                    <li>Collaboration 1: Description and partners</li>
+                    <li>Collaboration 2: Description and partners</li>
+                    <li>Collaboration 3: Description and partners</li>
+                </ul>
+            </div>
+            <div class="research-item">
+                <h3>Research Grants</h3>
+                <ul>
+                    <li>Grant 1: Description and amount</li>
+                    <li>Grant 2: Description and amount</li>
+                    <li>Grant 3: Description and amount</li>
+                </ul>
             </div>
         </div>
     </section>
@@ -214,5 +356,78 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const activityDropdown = document.querySelector('.activity-dropdown');
+            const academicSubmenu = document.querySelector('.academic-submenu');
+            const researchSubmenu = document.querySelector('.research-submenu');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+                this.classList.toggle('active');
+            });
+            
+            // Activity dropdown toggle
+            activityDropdown.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.classList.toggle('active');
+                
+                // Close other submenus when opening a new one
+                if (this.classList.contains('active')) {
+                    academicSubmenu.classList.remove('active');
+                    researchSubmenu.classList.remove('active');
+                }
+            });
+
+            // Academic submenu toggle
+            academicSubmenu.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.classList.toggle('active');
+                
+                // Close research submenu when opening academic
+                if (this.classList.contains('active')) {
+                    researchSubmenu.classList.remove('active');
+                }
+            });
+
+            // Research submenu toggle
+            researchSubmenu.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.classList.toggle('active');
+                
+                // Close academic submenu when opening research
+                if (this.classList.contains('active')) {
+                    academicSubmenu.classList.remove('active');
+                }
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!activityDropdown.contains(e.target) && 
+                    !academicSubmenu.contains(e.target) && 
+                    !researchSubmenu.contains(e.target)) {
+                    activityDropdown.classList.remove('active');
+                    academicSubmenu.classList.remove('active');
+                    researchSubmenu.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('.nav-links a[href]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') !== '#') {
+                        navLinks.classList.remove('show');
+                        mobileMenuBtn.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html> 
