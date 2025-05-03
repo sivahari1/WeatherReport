@@ -58,14 +58,63 @@ const cvButton = document.querySelector('.cv-button');
 // Get the <span> element that closes the modal
 const span = document.getElementsByClassName("close")[0];
 
+// PDF state variables
+let currentPdf = null;
+let currentPage = 1;
+let totalPages = 0;
+
+// Create navigation controls
+const navControls = document.createElement('div');
+navControls.className = 'pdf-nav-controls';
+navControls.innerHTML = `
+    <button id="prevPage" class="nav-btn">Previous</button>
+    <span id="pageInfo">Page 1 of 1</span>
+    <button id="nextPage" class="nav-btn">Next</button>
+    <a href="jsrk_cv.pdf" download class="nav-btn download-btn">
+        <i class="fas fa-download"></i> Download
+    </a>
+`;
+pdfViewer.insertBefore(navControls, pdfCanvas);
+
 // When the user clicks the button, open the modal and load PDF
-cvButton.onclick = async function() {
+cvButton.addEventListener('click', async function(e) {
+    e.preventDefault();
     modal.style.display = "block";
     try {
-        const loadingTask = pdfjsLib.getDocument('https://drive.google.com/uc?export=view&id=15NXupx79tnCxfh8eSAP9NSijxARKP1YF');
-        const pdf = await loadingTask.promise;
-        const page = await pdf.getPage(1);
-        
+        // Use a direct PDF URL instead of Google Drive
+        const loadingTask = pdfjsLib.getDocument('jsrk_cv.pdf');
+        currentPdf = await loadingTask.promise;
+        totalPages = currentPdf.numPages;
+        currentPage = 1;
+        updatePageInfo();
+        await renderPage(currentPage);
+    } catch (error) {
+        console.error('Error loading PDF:', error);
+        pdfViewer.innerHTML = '<p>Error loading PDF. Please try again later.</p>';
+    }
+});
+
+// Navigation button event listeners
+document.getElementById('prevPage').addEventListener('click', async function() {
+    if (currentPage > 1) {
+        currentPage--;
+        await renderPage(currentPage);
+        updatePageInfo();
+    }
+});
+
+document.getElementById('nextPage').addEventListener('click', async function() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        await renderPage(currentPage);
+        updatePageInfo();
+    }
+});
+
+// Function to render a specific page
+async function renderPage(pageNumber) {
+    try {
+        const page = await currentPdf.getPage(pageNumber);
         const viewport = page.getViewport({ scale: 1.5 });
         const context = pdfCanvas.getContext('2d');
         pdfCanvas.height = viewport.height;
@@ -76,9 +125,13 @@ cvButton.onclick = async function() {
             viewport: viewport
         }).promise;
     } catch (error) {
-        console.error('Error loading PDF:', error);
-        pdfViewer.innerHTML = '<p>Error loading PDF. Please try again later.</p>';
+        console.error('Error rendering page:', error);
     }
+}
+
+// Function to update page information
+function updatePageInfo() {
+    document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -87,6 +140,9 @@ span.onclick = function() {
     // Clear the canvas
     const context = pdfCanvas.getContext('2d');
     context.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+    currentPdf = null;
+    currentPage = 1;
+    totalPages = 0;
 }
 
 // When the user clicks anywhere outside of the modal, close it
@@ -96,6 +152,9 @@ window.onclick = function(event) {
         // Clear the canvas
         const context = pdfCanvas.getContext('2d');
         context.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+        currentPdf = null;
+        currentPage = 1;
+        totalPages = 0;
     }
 }
 
