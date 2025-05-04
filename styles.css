@@ -157,8 +157,8 @@ body {
 }
 
 .profile-image {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid rgba(255,255,255,0.8);
@@ -464,7 +464,8 @@ section::before {
     }
 
     .profile-image {
-        margin-bottom: 1.5rem;
+        width: 150px;
+        height: 150px;
     }
 
     .activities-marquee {
@@ -505,8 +506,8 @@ section::before {
     }
 
     .profile-image {
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 120px;
     }
 
     .section-title {
@@ -1284,24 +1285,19 @@ footer {
     }
 }
 
-/* Add to your HTML file */
-
-/* Hide mobile menu button on desktop */
+/* Mobile Menu Button */
 .mobile-menu-btn {
     display: none;
     background: none;
     border: none;
     font-size: 2rem;
-    color: #222 !important; /* Dark icon for visibility */
+    color: white;
     cursor: pointer;
     position: absolute;
-    left: 1.5rem; /* <-- left side */
+    left: 1.5rem;
     top: 1.2rem;
     z-index: 1100;
-    background: #fff; /* White background for the button */
-    border-radius: 50%;
-    padding: 0.3em 0.5em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0.5rem;
 }
 
 /* Mobile styles */
@@ -1309,235 +1305,142 @@ footer {
     .nav-content {
         position: relative;
         justify-content: flex-start;
+        padding: 1rem;
     }
+
     .mobile-menu-btn {
-        display: flex;
-    }
-    .logo {
-        margin-left: 60px; /* Add space for the hamburger */
-    }
-    .nav-links {
-        display: none !important;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #fff;
-        width: 100%;
-        padding: 1rem 0;
-        z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    .nav-links.show {
-        display: flex !important;
-    }
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-        margin: 0.5rem 0;
-    }
-    .nav-links a {
-        width: 90%;
-        margin: 0 auto;
         display: block;
-        color: #222;
-        background: #f0f0f0;
-        border-radius: 8px;
-        padding: 0.7em 0;
-        font-weight: 600;
-        transition: background 0.2s, color 0.2s;
     }
-    .nav-links a:hover {
-        background: #1976d2;
-        color: #fff;
-    }
-}
 
-/* Hamburger animation when menu is open */
-.mobile-menu-btn.active .hamburger {
-    background: transparent;
-}
-.mobile-menu-btn.active .hamburger::before {
-    transform: translateY(9px) rotate(45deg);
-}
-.mobile-menu-btn.active .hamburger::after {
-    transform: translateY(-9px) rotate(-45deg);
-}
-
-/* Hamburger icon (three lines) */
-.hamburger {
-    display: block;
-    width: 28px;
-    height: 3px;
-    background: red; /* Red color for hamburger lines */
-    position: relative;
-    border-radius: 2px;
-    transition: all 0.3s;
-}
-.hamburger::before,
-.hamburger::after {
-    content: '';
-    display: block;
-    width: 28px;
-    height: 3px;
-    background: red; /* Red color for hamburger lines */
-    position: absolute;
-    border-radius: 2px;
-    transition: all 0.3s;
-}
-.hamburger::before {
-    top: -9px;
-}
-.hamburger::after {
-    top: 9px;
-}
-
-/* Hamburger menu button */
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    left: 1.5rem;
-    top: 1.2rem;
-    z-index: 1100;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
-
-/* Hamburger icon (three lines) */
-.hamburger {
-    display: block;
-    width: 28px;
-    height: 3px;
-    background: red; /* Red color for hamburger lines */
-    position: relative;
-    border-radius: 2px;
-    transition: all 0.3s;
-}
-.hamburger::before,
-.hamburger::after {
-    content: '';
-    display: block;
-    width: 28px;
-    height: 3px;
-    background: red; /* Red color for hamburger lines */
-    position: absolute;
-    border-radius: 2px;
-    transition: all 0.3s;
-}
-.hamburger::before {
-    top: -9px;
-}
-.hamburger::after {
-    top: 9px;
-}
-
-/* Hamburger menu button */
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    left: 1.5rem;
-    top: 1.2rem;
-    z-index: 1100;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
-
-/* Hamburger icon (three lines) */
-.hamburger {
-    display: block;
-    width: 28px;
-    height: 3px;
-    background: red; /* Red color for hamburger lines */
-    position: relative;
-    border-radius: 2px;
-    transition: all 0.3s;
-}
-.hamburger::before,
-.hamburger::after {
-    content: '';
-    display: block;
-    width: 28px;
-    height: 3px;
-    background: red; /* Red color for hamburger lines */
-    position: absolute;
-    border-radius: 2px;
-    transition: all 0.3s;
-}
-.hamburger::before {
-    top: -9px;
-}
-.hamburger::after {
-    top: 9px;
-}
-
-/* Mobile styles */
-@media (max-width: 900px) {
-    .nav-content {
-        position: relative;
-        justify-content: flex-start;
-    }
-    .mobile-menu-btn {
-        display: flex;
-    }
     .logo {
-        margin-left: 60px; /* Add space for the hamburger */
+        margin-left: 60px;
     }
+
     .nav-links {
         display: none;
-        flex-direction: column;
         position: absolute;
         top: 100%;
         left: 0;
-        background: #fff;
         width: 100%;
+        background: var(--primary-color);
         padding: 1rem 0;
         z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+
     .nav-links.show {
         display: flex;
+        flex-direction: column;
     }
+
     .nav-links li {
         width: 100%;
         text-align: center;
         margin: 0.5rem 0;
     }
+
     .nav-links a {
+        display: block;
         width: 90%;
         margin: 0 auto;
-        display: block;
-        color: #222;
-        background: #f0f0f0;
+        padding: 0.8rem 1rem;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
         border-radius: 8px;
-        padding: 0.7em 0;
-        font-weight: 600;
-        transition: background 0.2s, color 0.2s;
+        transition: all 0.3s ease;
     }
+
     .nav-links a:hover {
-        background: #1976d2;
-        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Activity dropdown in mobile */
+    .activity-dropdown-content {
+        display: none;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+    }
+
+    .activity-dropdown.active .activity-dropdown-content {
+        display: block;
+    }
+
+    /* Submenu items in mobile */
+    .academic-submenu-content,
+    .research-submenu-content {
+        display: none;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+    }
+
+    .academic-submenu.active .academic-submenu-content,
+    .research-submenu.active .research-submenu-content {
+        display: block;
+    }
+
+    /* Submenu links */
+    .activity-dropdown-content a,
+    .academic-submenu-content a,
+    .research-submenu-content a {
+        display: block;
+        padding: 0.8rem 1rem;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 8px;
+        margin: 0.3rem 0;
+    }
+
+    .activity-dropdown-content a:hover,
+    .academic-submenu-content a:hover,
+    .research-submenu-content a:hover {
+        background: rgba(255, 255, 255, 0.1);
     }
 }
 
-/* Hamburger animation when menu is open */
+/* Hamburger icon */
+.hamburger {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background: white;
+    position: relative;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 3px;
+    background: white;
+    position: absolute;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger::before {
+    top: -9px;
+}
+
+.hamburger::after {
+    top: 9px;
+}
+
+/* Active state for hamburger */
 .mobile-menu-btn.active .hamburger {
     background: transparent;
 }
+
 .mobile-menu-btn.active .hamburger::before {
     transform: translateY(9px) rotate(45deg);
 }
+
 .mobile-menu-btn.active .hamburger::after {
     transform: translateY(-9px) rotate(-45deg);
 }
@@ -1979,5 +1882,108 @@ footer {
 
     .research-item {
         padding: 1.5rem;
+    }
+}
+
+/* About Section */
+.about {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.about::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+    opacity: 0.3;
+}
+
+.about h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.about h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--accent-color);
+}
+
+.about-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.about-text {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: transform 0.3s ease;
+}
+
+.about-text:hover {
+    transform: translateY(-5px);
+}
+
+.about-text p {
+    margin: 0 auto;
+    line-height: 1.8;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 700px;
+    letter-spacing: 0.3px;
+    word-spacing: 1px;
+    font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    .about {
+        padding: 3rem 1rem;
+    }
+
+    .about h2 {
+        font-size: 2rem;
+    }
+
+    .about-text {
+        padding: 2rem;
+    }
+
+    .about-text p {
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-text p {
+        font-size: 1rem;
+        line-height: 1.6;
     }
 }
