@@ -45,9 +45,7 @@ const App: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h1 className="text-4xl font-light text-gray-800 mb-8 text-center">
-            Weather Dashboard
-          </h1>
+          <h1 className="text-4xl font-bold text-white mb-8 text-center">Weather Dashboard</h1>
           <SearchBar onSearch={handleSearch} />
         </motion.div>
 

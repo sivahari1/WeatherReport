@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { WeatherData, getCurrentWeather } from '../services/weatherService';
+import Clock from './Clock';
 
 interface WeatherCardProps {
   city: string;
@@ -78,13 +79,13 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          {weather.city}, {weather.country}
+        </h2>
+        <Clock />
+      </div>
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-light text-gray-800">
-            {weather.city}, {weather.country}
-          </h2>
-          <p className="text-gray-500">{new Date().toLocaleDateString()}</p>
-        </div>
         <motion.div
           initial={{ scale: 0.5, rotate: -10 }}
           animate={{ scale: 1, rotate: 0 }}
@@ -93,9 +94,6 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
         >
           {weather.icon}
         </motion.div>
-      </div>
-      
-      <div className="mt-4">
         <motion.div
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
@@ -104,6 +102,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
         >
           {weather.temp}°C
         </motion.div>
+      </div>
+      
+      <div className="mt-4">
         <p className="text-gray-600 mt-2 capitalize">{weather.description}</p>
         
         <motion.div
