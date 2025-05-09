@@ -11,8 +11,31 @@ export interface WeatherData {
   description: string;
   icon: string;
   wind_speed: number;
+  wind_direction: number;
   city: string;
   country: string;
+  alerts?: WeatherAlert[];
+  sunrise: number;
+  sunset: number;
+}
+
+export interface WeatherAlert {
+  event: string;
+  description: string;
+  start: number;
+  end: number;
+  severity: string;
+}
+
+export interface HourlyForecast {
+  time: string;
+  temp: number;
+  description: string;
+  icon: string;
+  wind_speed: number;
+  wind_direction: number;
+  humidity: number;
+  precipitation: number;
 }
 
 export interface ForecastData {
@@ -20,6 +43,8 @@ export interface ForecastData {
   temp: number;
   description: string;
   icon: string;
+  wind_speed: number;
+  wind_direction: number;
 }
 
 const getWeatherIcon = (iconCode: string): string => {
@@ -46,13 +71,13 @@ const getWeatherIcon = (iconCode: string): string => {
   return iconMap[iconCode] || '☀️';
 };
 
-export const getCurrentWeather = async (city: string): Promise<WeatherData> => {
+export const getCurrentWeather = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<WeatherData> => {
   try {
     const response = await axios.get(`${BASE_URL}/weather`, {
       params: {
         q: city,
         appid: API_KEY,
-        units: 'metric',
+        units: units,
       },
     });
 
@@ -65,8 +90,12 @@ export const getCurrentWeather = async (city: string): Promise<WeatherData> => {
       description: data.weather[0].description,
       icon: getWeatherIcon(data.weather[0].icon),
       wind_speed: data.wind.speed,
+      wind_direction: data.wind.deg,
       city: data.name,
       country: data.sys.country,
+      sunrise: data.sys.sunrise,
+      sunset: data.sys.sunset,
+      alerts: data.alerts || [],
     };
   } catch (error) {
     console.error('Error fetching weather data:', error);
@@ -74,17 +103,42 @@ export const getCurrentWeather = async (city: string): Promise<WeatherData> => {
   }
 };
 
-export const getForecast = async (city: string): Promise<ForecastData[]> => {
+export const getHourlyForecast = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<HourlyForecast[]> => {
   try {
     const response = await axios.get(`${BASE_URL}/forecast`, {
       params: {
         q: city,
         appid: API_KEY,
-        units: 'metric',
+        units: units,
       },
     });
 
-    // Get one forecast per day at noon
+    return response.data.list.slice(0, 24).map((forecast: any) => ({
+      time: new Date(forecast.dt * 1000).toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }),
+      temp: Math.round(forecast.main.temp),
+      description: forecast.weather[0].description,
+      icon: getWeatherIcon(forecast.weather[0].icon),
+      wind_speed: forecast.wind.speed,
+      wind_direction: forecast.wind.deg,
+      humidity: forecast.main.humidity,
+      precipitation: forecast.pop * 100, // Probability of precipitation
+    }));
+  } catch (error) {
+    console.error('Error fetching hourly forecast:', error);
+    throw error;
+  }
+};
+
+export const getForecast = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<ForecastData[]> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/forecast`, {
+      params: {
+        q: city,
+        appid: API_KEY,
+        units: units,
+      },
+    });
+
     const dailyForecasts = response.data.list.filter((item: any) => 
       item.dt_txt.includes('12:00:00')
     ).slice(0, 5);
@@ -94,9 +148,44 @@ export const getForecast = async (city: string): Promise<ForecastData[]> => {
       temp: Math.round(forecast.main.temp),
       description: forecast.weather[0].description,
       icon: getWeatherIcon(forecast.weather[0].icon),
+      wind_speed: forecast.wind.speed,
+      wind_direction: forecast.wind.deg,
     }));
   } catch (error) {
     console.error('Error fetching forecast data:', error);
+    throw error;
+  }
+};
+
+export const getLocationWeather = async (lat: number, lon: number, units: 'metric' | 'imperial' = 'metric'): Promise<WeatherData> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/weather`, {
+      params: {
+        lat,
+        lon,
+        appid: API_KEY,
+        units: units,
+      },
+    });
+
+    const data = response.data;
+    return {
+      temp: Math.round(data.main.temp),
+      feels_like: Math.round(data.main.feels_like),
+      humidity: data.main.humidity,
+      pressure: data.main.pressure,
+      description: data.weather[0].description,
+      icon: getWeatherIcon(data.weather[0].icon),
+      wind_speed: data.wind.speed,
+      wind_direction: data.wind.deg,
+      city: data.name,
+      country: data.sys.country,
+      sunrise: data.sys.sunrise,
+      sunset: data.sys.sunset,
+      alerts: data.alerts || [],
+    };
+  } catch (error) {
+    console.error('Error fetching location weather data:', error);
     throw error;
   }
 }; 

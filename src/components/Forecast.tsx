@@ -4,9 +4,10 @@ import { ForecastData, getForecast } from '../services/weatherService';
 
 interface ForecastProps {
   city: string;
+  units: 'metric' | 'imperial';
 }
 
-const Forecast: React.FC<ForecastProps> = ({ city }) => {
+const Forecast: React.FC<ForecastProps> = ({ city, units }) => {
   const [forecast, setForecast] = useState<ForecastData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +16,7 @@ const Forecast: React.FC<ForecastProps> = ({ city }) => {
     const fetchForecast = async () => {
       try {
         setLoading(true);
-        const data = await getForecast(city);
+        const data = await getForecast(city, units);
         setForecast(data);
         setError(null);
       } catch (err) {
@@ -29,7 +30,7 @@ const Forecast: React.FC<ForecastProps> = ({ city }) => {
     if (city) {
       fetchForecast();
     }
-  }, [city]);
+  }, [city, units]);
 
   if (loading) {
     return (
@@ -97,8 +98,11 @@ const Forecast: React.FC<ForecastProps> = ({ city }) => {
             >
               {day.icon}
             </motion.div>
-            <p className="text-gray-800 font-light">{day.temp}°C</p>
+            <p className="text-gray-800 font-light">{day.temp}°{units === 'metric' ? 'C' : 'F'}</p>
             <p className="text-sm text-gray-500 capitalize">{day.description}</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Wind: {Math.round(day.wind_speed * 3.6)} {units === 'metric' ? 'km/h' : 'mph'}
+            </p>
           </motion.div>
         ))}
       </div>

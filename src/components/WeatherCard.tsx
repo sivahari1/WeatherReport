@@ -5,18 +5,38 @@ import { WeatherData, getCurrentWeather } from '../services/weatherService';
 interface WeatherCardProps {
   city: string;
   onTempUpdate?: (temp: number) => void;
+  units: 'metric' | 'imperial';
 }
 
-const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
+const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate, units }) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState<string>('');
+
+  // Update time every second
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: true 
+      }));
+    };
+
+    updateTime(); // Initial update
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
         setLoading(true);
-        const data = await getCurrentWeather(city);
+        const data = await getCurrentWeather(city, units);
         setWeather(data);
         setError(null);
         if (onTempUpdate && data) {
@@ -34,7 +54,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
       fetchWeather();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [city]);
+  }, [city, units]);
 
   if (loading) {
     return (
@@ -83,7 +103,11 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
           <h2 className="text-2xl font-light text-gray-800">
             {weather.city}, {weather.country}
           </h2>
-          <p className="text-gray-500">{new Date().toLocaleDateString()}</p>
+          <div className="flex items-center gap-2 text-gray-500">
+            <p>{new Date().toLocaleDateString()}</p>
+            <span>•</span>
+            <p className="font-mono">{currentTime}</p>
+          </div>
         </div>
         <motion.div
           initial={{ scale: 0.5, rotate: -10 }}
@@ -102,7 +126,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
           transition={{ delay: 0.2 }}
           className="text-5xl font-light text-gray-800"
         >
-          {weather.temp}°C
+          {weather.temp}°{units === 'metric' ? 'C' : 'F'}
         </motion.div>
         <p className="text-gray-600 mt-2 capitalize">{weather.description}</p>
         
@@ -113,13 +137,13 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate }) => {
           className="mt-6 grid grid-cols-2 gap-4 text-sm text-gray-500"
         >
           <div className="bg-white/20 rounded-lg p-3">
-            <span className="font-medium">Feels like:</span> {weather.feels_like}°C
+            <span className="font-medium">Feels like:</span> {weather.feels_like}°{units === 'metric' ? 'C' : 'F'}
           </div>
           <div className="bg-white/20 rounded-lg p-3">
             <span className="font-medium">Humidity:</span> {weather.humidity}%
           </div>
           <div className="bg-white/20 rounded-lg p-3">
-            <span className="font-medium">Wind:</span> {weather.wind_speed} m/s
+            <span className="font-medium">Wind:</span> {Math.round(weather.wind_speed * 3.6)} {units === 'metric' ? 'km/h' : 'mph'}
           </div>
           <div className="bg-white/20 rounded-lg p-3">
             <span className="font-medium">Pressure:</span> {weather.pressure} hPa

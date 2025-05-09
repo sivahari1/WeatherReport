@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import WeatherCard from './components/WeatherCard';
 import Forecast from './components/Forecast';
 import SearchBar from './components/SearchBar';
+import WeatherAlerts from './components/WeatherAlerts';
+import HourlyForecast from './components/HourlyForecast';
+import UnitToggle from './components/UnitToggle';
+import { getCurrentWeather, getForecast, getHourlyForecast, getLocationWeather, WeatherData } from './services/weatherService';
 
 function getBgGradientByTemp(temp: number) {
   if (temp <= 20) {
@@ -23,13 +27,70 @@ function getBgGradientByTemp(temp: number) {
 const App: React.FC = () => {
   const [city, setCity] = useState('London');
   const [currentTemp, setCurrentTemp] = useState<number>(20);
+  const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [hourlyForecast, setHourlyForecast] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchWeatherData = async (location: string | { lat: number; lon: number }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      let weather;
+      if (typeof location === 'string') {
+        weather = await getCurrentWeather(location, units);
+      } else {
+        weather = await getLocationWeather(location.lat, location.lon, units);
+      }
+      setWeatherData(weather);
+      setCurrentTemp(weather.temp);
+      setCity(weather.city);
+
+      const hourly = await getHourlyForecast(weather.city, units);
+      setHourlyForecast(hourly);
+    } catch (err) {
+      setError('Failed to fetch weather data. Please try again.');
+      console.error('Error fetching weather:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWeatherData(city);
+  }, [units]);
 
   const handleSearch = (newCity: string) => {
     setCity(newCity);
+    fetchWeatherData(newCity);
   };
 
   const handleTempUpdate = (temp: number) => {
     setCurrentTemp(temp);
+  };
+
+  const handleUnitToggle = (newUnits: 'metric' | 'imperial') => {
+    setUnits(newUnits);
+  };
+
+  const handleLocationClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeatherData({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+        },
+        (error) => {
+          setError('Failed to get your location. Please try searching for a city instead.');
+          console.error('Geolocation error:', error);
+        }
+      );
+    } else {
+      setError('Geolocation is not supported by your browser.');
+    }
   };
 
   return (
@@ -44,28 +105,72 @@ const App: React.FC = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
+          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
         >
-          <h1 className="text-4xl font-light text-gray-800 mb-8 text-center">
+          <h1 className="text-4xl font-light text-gray-800 text-center md:text-left">
             Weather Dashboard
           </h1>
-          <SearchBar onSearch={handleSearch} />
+          <div className="flex items-center justify-center gap-4">
+            <UnitToggle units={units} onToggle={handleUnitToggle} />
+            <button
+              onClick={handleLocationClick}
+              className="p-2 rounded-lg bg-white bg-opacity-20 backdrop-blur-lg hover:bg-opacity-30 transition-colors"
+              title="Use my location"
+            >
+              📍
+            </button>
+          </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <WeatherCard city={city} onTempUpdate={handleTempUpdate} />
-        </motion.div>
+        <SearchBar onSearch={handleSearch} />
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <Forecast city={city} />
-        </motion.div>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          >
+            {error}
+          </motion.div>
+        )}
+
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800"></div>
+          </div>
+        ) : (
+          <>
+            {weatherData?.alerts && weatherData.alerts.length > 0 && (
+              <WeatherAlerts alerts={weatherData.alerts} />
+            )}
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <WeatherCard city={city} onTempUpdate={handleTempUpdate} units={units} />
+            </motion.div>
+
+            {hourlyForecast.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <HourlyForecast forecast={hourlyForecast} units={units} />
+              </motion.div>
+            )}
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <Forecast city={city} units={units} />
+            </motion.div>
+          </>
+        )}
 
         <motion.footer
           initial={{ opacity: 0 }}
