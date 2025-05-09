@@ -28,4 +28,54 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #A0AEC0;
+}
+
+@keyframes sun-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-sun-spin {
+  animation: sun-spin 4s linear infinite;
+}
+
+@keyframes cloud-move {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+.animate-cloud-move {
+  animation: cloud-move 3s ease-in-out infinite;
+}
+
+@keyframes rain-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+.animate-rain-bounce {
+  animation: rain-bounce 1.2s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+}
+
+@keyframes snow-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.animate-snow-shake {
+  animation: snow-shake 1.5s ease-in-out infinite;
+}
+
+@keyframes thunder-flash {
+  0%, 100% { filter: brightness(1); }
+  20%, 60% { filter: brightness(2); }
+  40%, 80% { filter: brightness(0.7); }
+}
+.animate-thunder-flash {
+  animation: thunder-flash 1s linear infinite;
+}
+
+@keyframes mist-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-mist-fade {
+  animation: mist-fade 2s ease-in-out infinite;
 } 

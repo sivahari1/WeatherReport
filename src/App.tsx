@@ -7,25 +7,47 @@ import WeatherAlerts from './components/WeatherAlerts';
 import HourlyForecast from './components/HourlyForecast';
 import UnitToggle from './components/UnitToggle';
 import { getCurrentWeather, getForecast, getHourlyForecast, getLocationWeather, WeatherData } from './services/weatherService';
+import WeatherTrivia from './components/WeatherTrivia';
 
-function getBgGradientByTemp(temp: number) {
-  if (temp <= 20) {
-    return 'bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400'; // Cool
-  } else if (temp <= 30) {
-    return 'bg-gradient-to-br from-green-200 via-yellow-200 to-yellow-300'; // Mild
-  } else if (temp <= 35) {
-    return 'bg-gradient-to-br from-yellow-200 via-orange-200 to-orange-300'; // Warm
-  } else if (temp <= 40) {
-    return 'bg-gradient-to-br from-orange-300 via-orange-400 to-red-400'; // Hot
-  } else if (temp <= 45) {
-    return 'bg-gradient-to-br from-red-400 via-red-500 to-red-600'; // Very Hot
+function getBgGradientByTemp(temp: number, units: 'metric' | 'imperial') {
+  if (units === 'metric') {
+    if (temp <= 0) {
+      return 'bg-gradient-to-br from-blue-300 via-blue-400 to-blue-600'; // Very cold
+    } else if (temp <= 10) {
+      return 'bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400'; // Cold
+    } else if (temp <= 20) {
+      return 'bg-gradient-to-br from-green-200 via-yellow-200 to-yellow-300'; // Mild
+    } else if (temp <= 30) {
+      return 'bg-gradient-to-br from-yellow-200 via-orange-200 to-orange-300'; // Warm
+    } else if (temp <= 35) {
+      return 'bg-gradient-to-br from-orange-300 via-orange-400 to-red-400'; // Hot
+    } else if (temp <= 40) {
+      return 'bg-gradient-to-br from-red-400 via-red-500 to-red-600'; // Very Hot
+    } else {
+      return 'bg-gradient-to-br from-red-600 via-red-700 to-red-900'; // Extreme
+    }
   } else {
-    return 'bg-gradient-to-br from-red-600 via-red-700 to-red-900'; // Extreme
+    // Fahrenheit
+    if (temp <= 32) {
+      return 'bg-gradient-to-br from-blue-300 via-blue-400 to-blue-600'; // Very cold
+    } else if (temp <= 50) {
+      return 'bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400'; // Cold
+    } else if (temp <= 68) {
+      return 'bg-gradient-to-br from-green-200 via-yellow-200 to-yellow-300'; // Mild
+    } else if (temp <= 86) {
+      return 'bg-gradient-to-br from-yellow-200 via-orange-200 to-orange-300'; // Warm
+    } else if (temp <= 95) {
+      return 'bg-gradient-to-br from-orange-300 via-orange-400 to-red-400'; // Hot
+    } else if (temp <= 104) {
+      return 'bg-gradient-to-br from-red-400 via-red-500 to-red-600'; // Very Hot
+    } else {
+      return 'bg-gradient-to-br from-red-600 via-red-700 to-red-900'; // Extreme
+    }
   }
 }
 
 const App: React.FC = () => {
-  const [city, setCity] = useState('London');
+  const [city, setCity] = useState('Hyderabad');
   const [currentTemp, setCurrentTemp] = useState<number>(20);
   const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -75,7 +97,15 @@ const App: React.FC = () => {
   };
 
   const handleLocationClick = () => {
+    // Allow geolocation on HTTPS or localhost/127.0.0.1
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (window.location.protocol !== 'https:' && !isLocalhost) {
+      setError('Geolocation requires a secure HTTPS connection. Please use HTTPS to access your location.');
+      return;
+    }
+
     if (navigator.geolocation) {
+      setLoading(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           fetchWeatherData({
@@ -84,17 +114,37 @@ const App: React.FC = () => {
           });
         },
         (error) => {
-          setError('Failed to get your location. Please try searching for a city instead.');
+          let errorMessage = 'Failed to get your location. ';
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage += 'Please allow location access in your browser settings.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage += 'Location information is unavailable.';
+              break;
+            case error.TIMEOUT:
+              errorMessage += 'Location request timed out.';
+              break;
+            default:
+              errorMessage += 'Please try searching for a city instead.';
+          }
+          setError(errorMessage);
+          setLoading(false);
           console.error('Geolocation error:', error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
         }
       );
     } else {
-      setError('Geolocation is not supported by your browser.');
+      setError('Geolocation is not supported by your browser. Please try searching for a city instead.');
     }
   };
 
   return (
-    <div className={`min-h-screen ${getBgGradientByTemp(currentTemp)} p-4 md:p-8 transition-colors duration-700`}>
+    <div className={`min-h-screen ${getBgGradientByTemp(currentTemp, units)} p-4 md:p-8 transition-colors duration-700`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -121,6 +171,8 @@ const App: React.FC = () => {
             </button>
           </div>
         </motion.div>
+
+        <WeatherTrivia />
 
         <SearchBar onSearch={handleSearch} />
 

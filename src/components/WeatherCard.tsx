@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { WeatherData, getCurrentWeather } from '../services/weatherService';
 import Clock from './Clock';
+import AnimatedWeather from './AnimatedWeather';
 
 interface WeatherCardProps {
   city: string;
@@ -56,6 +57,28 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate, units }) 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [city, units]);
+
+  function getAnimationType(description: string) {
+    const desc = description.toLowerCase();
+    if (desc.includes('clear')) return 'clear';
+    if (desc.includes('cloud')) return 'clouds';
+    if (desc.includes('rain') || desc.includes('drizzle')) return 'rain';
+    if (desc.includes('snow')) return 'snow';
+    if (desc.includes('thunder')) return 'thunderstorm';
+    if (desc.includes('mist') || desc.includes('fog') || desc.includes('haze')) return 'mist';
+    return 'clear';
+  }
+
+  function getIconAnimationClass(description: string) {
+    const desc = description.toLowerCase();
+    if (desc.includes('clear')) return 'animate-sun-spin';
+    if (desc.includes('cloud')) return 'animate-cloud-move';
+    if (desc.includes('rain') || desc.includes('drizzle')) return 'animate-rain-bounce';
+    if (desc.includes('snow')) return 'animate-snow-shake';
+    if (desc.includes('thunder')) return 'animate-thunder-flash';
+    if (desc.includes('mist') || desc.includes('fog') || desc.includes('haze')) return 'animate-mist-fade';
+    return '';
+  }
 
   if (loading) {
     return (
@@ -112,23 +135,31 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate, units }) 
         </div>
         <Clock />
       </div>
-      <div className="flex items-center justify-between">
-        <motion.div
-          initial={{ scale: 0.5, rotate: -10 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          className="text-6xl"
-        >
-          {weather.icon}
-        </motion.div>
-        <motion.div
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-5xl font-light text-gray-800"
-        >
-          {weather.temp}°{units === 'metric' ? 'C' : 'F'}
-        </motion.div>
+      <div className="flex flex-col items-center justify-between md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col items-center mr-4">
+          <div style={{ width: 96, height: 96 }}>
+            <AnimatedWeather type={getAnimationType(weather.description)} />
+          </div>
+          <span className="text-xs text-gray-500 mt-1">Animated Weather</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <motion.div
+            initial={{ scale: 0.5, rotate: -10 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+            className={`text-6xl ${getIconAnimationClass(weather.description)}`}
+          >
+            {weather.icon}
+          </motion.div>
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-5xl font-light text-gray-800"
+          >
+            {weather.temp}°{units === 'metric' ? 'C' : 'F'}
+          </motion.div>
+        </div>
       </div>
       
       <div className="mt-4">
