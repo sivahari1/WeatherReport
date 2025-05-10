@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 
 interface SearchBarProps {
-  onSearch?: (location: string) => void;
+  onSearch?: (location: { name: string, lat: number, lon: number }) => void;
 }
 
 const GEO_API = 'https://api.openweathermap.org/geo/1.0/direct';
@@ -40,15 +40,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const label = `${city.name}${city.state ? ', ' + city.state : ''}, ${city.country}`;
     setLocation(label);
     setSuggestions([]);
-    if (onSearch) onSearch(city.name);
-    inputRef.current?.blur(); // Remove focus to hide dropdown
+    if (onSearch) onSearch({ name: city.name, lat: city.lat, lon: city.lon });
+    inputRef.current?.blur();
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (location.trim() && onSearch) {
-      onSearch(location.trim());
-    }
+    // Only allow search if a suggestion was selected (location is an object with lat/lon)
     setSuggestions([]);
     inputRef.current?.blur();
   };

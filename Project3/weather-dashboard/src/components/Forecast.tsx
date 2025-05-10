@@ -1,104 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { ForecastData, getForecast } from '../services/weatherService';
 
 interface ForecastProps {
-  city: string;
+  forecast: Array<{
+    dt: number;
+    main: {
+      temp: number;
+      feels_like: number;
+      humidity: number;
+    };
+    weather: Array<{
+      description: string;
+      icon: string;
+    }>;
+    wind: {
+      speed: number;
+    };
+  }>;
 }
 
-const Forecast: React.FC<ForecastProps> = ({ city }) => {
-  const [forecast, setForecast] = useState<ForecastData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchForecast = async () => {
-      try {
-        setLoading(true);
-        const data = await getForecast(city);
-        setForecast(data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to fetch forecast data');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (city) {
-      fetchForecast();
-    }
-  }, [city]);
-
-  if (loading) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-white/30 backdrop-blur-sm rounded-2xl shadow-lg p-6"
-      >
-        <h3 className="text-xl font-light text-gray-800 mb-4">5-Day Forecast</h3>
-        <div className="flex overflow-x-auto gap-4 pb-2">
-          {[...Array(5)].map((_, index) => (
-            <div
-              key={index}
-              className="flex-shrink-0 w-24 bg-white/20 rounded-xl p-4 animate-pulse"
-            >
-              <div className="h-4 bg-gray-200/50 rounded w-3/4 mb-2"></div>
-              <div className="h-8 bg-gray-200/50 rounded w-full my-2"></div>
-              <div className="h-4 bg-gray-200/50 rounded w-1/2"></div>
-              <div className="h-4 bg-gray-200/50 rounded w-3/4 mt-2"></div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    );
-  }
-
-  if (error || forecast.length === 0) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-white/30 backdrop-blur-sm rounded-2xl shadow-lg p-6"
-      >
-        <p className="text-red-500">{error || 'No forecast data available'}</p>
-      </motion.div>
-    );
-  }
+const Forecast: React.FC<ForecastProps> = ({ forecast }) => {
+  const getDayName = (dt: number) => {
+    const date = new Date(dt * 1000);
+    return date.toLocaleDateString('en-US', { weekday: 'short' });
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.2 }}
-      className="bg-white/30 backdrop-blur-sm rounded-2xl shadow-lg p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6 }}
+      className="mt-8"
     >
-      <h3 className="text-xl font-light text-gray-800 mb-4">5-Day Forecast</h3>
-      <div className="flex overflow-x-auto gap-4 pb-2">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">5-Day Forecast</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {forecast.map((day, index) => (
           <motion.div
-            key={index}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 + index * 0.1 }}
-            whileHover={{ scale: 1.05 }}
-            className="flex-shrink-0 w-24 bg-white/20 rounded-xl p-4 text-center backdrop-blur-sm"
+            key={day.dt}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 * index }}
+            className="bg-white/20 backdrop-blur-lg rounded-xl p-4 text-center"
           >
-            <p className="text-gray-600 font-medium">{day.date}</p>
-            <motion.div
-              initial={{ scale: 0.5, rotate: -10 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-              className="text-3xl my-2"
-            >
-              {day.icon}
-            </motion.div>
-            <p className="text-gray-800 font-light">{day.temp}°C</p>
-            <p className="text-sm text-gray-500 capitalize">{day.description}</p>
+            <h4 className="font-medium text-gray-800">{getDayName(day.dt)}</h4>
+            <img
+              src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
+              alt={day.weather[0].description}
+              className="w-16 h-16 mx-auto my-2"
+            />
+            <p className="text-2xl font-bold text-gray-800">{Math.round(day.main.temp)}°</p>
+            <p className="text-sm text-gray-600 capitalize">{day.weather[0].description}</p>
+            <div className="mt-2 text-sm text-gray-600">
+              <p>Humidity: {day.main.humidity}%</p>
+              <p>Wind: {day.wind.speed} m/s</p>
+            </div>
           </motion.div>
         ))}
       </div>

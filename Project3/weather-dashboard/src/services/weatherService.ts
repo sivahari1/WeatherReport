@@ -22,6 +22,21 @@ export interface ForecastData {
   icon: string;
 }
 
+export interface HourlyForecastData {
+  time: string;
+  temp: number;
+  icon: string;
+  description: string;
+  windSpeed: number;
+  precipitation: number;
+}
+
+export interface WeatherAlert {
+  type: 'warning' | 'info' | 'danger';
+  message: string;
+  time: string;
+}
+
 const getWeatherIcon = (iconCode: string): string => {
   const iconMap: { [key: string]: string } = {
     '01d': '☀️',
@@ -97,6 +112,79 @@ export const getForecast = async (city: string): Promise<ForecastData[]> => {
     }));
   } catch (error) {
     console.error('Error fetching forecast data:', error);
+    throw error;
+  }
+};
+
+export const getHourlyForecast = async (city: string): Promise<HourlyForecastData[]> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/forecast?q=${city}&appid=${API_KEY}&units=metric`
+    );
+    const data = await response.json();
+    
+    return data.list.slice(0, 8).map((item: any) => ({
+      time: new Date(item.dt * 1000).toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        hour12: true
+      }),
+      temp: Math.round(item.main.temp),
+      icon: getWeatherIcon(item.weather[0].id),
+      description: item.weather[0].description,
+      windSpeed: item.wind.speed,
+      precipitation: item.pop ? Math.round(item.pop * 100) : 0
+    }));
+  } catch (error) {
+    console.error('Error fetching hourly forecast:', error);
+    throw error;
+  }
+};
+
+export const getWeatherAlerts = async (city: string): Promise<WeatherAlert[]> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/weather?q=${city}&appid=${API_KEY}&units=metric`
+    );
+    const data = await response.json();
+    
+    const alerts: WeatherAlert[] = [];
+    
+    // Check for extreme temperatures
+    if (data.main.temp > 35) {
+      alerts.push({
+        type: 'warning',
+        message: 'High temperature alert: Stay hydrated and avoid prolonged sun exposure',
+        time: new Date().toLocaleTimeString()
+      });
+    } else if (data.main.temp < 5) {
+      alerts.push({
+        type: 'warning',
+        message: 'Low temperature alert: Dress warmly and be cautious of frost',
+        time: new Date().toLocaleTimeString()
+      });
+    }
+    
+    // Check for strong winds
+    if (data.wind.speed > 10) {
+      alerts.push({
+        type: 'warning',
+        message: 'Strong wind alert: Secure loose objects and be cautious outdoors',
+        time: new Date().toLocaleTimeString()
+      });
+    }
+    
+    // Check for heavy rain
+    if (data.weather[0].main === 'Rain' && data.rain && data.rain['1h'] > 5) {
+      alerts.push({
+        type: 'danger',
+        message: 'Heavy rain alert: Risk of flooding in some areas',
+        time: new Date().toLocaleTimeString()
+      });
+    }
+    
+    return alerts;
+  } catch (error) {
+    console.error('Error fetching weather alerts:', error);
     throw error;
   }
 }; 

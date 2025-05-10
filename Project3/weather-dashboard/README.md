@@ -1,36 +1,42 @@
 # Weather Dashboard
 
-A beautiful and minimalist weather dashboard built with React, TypeScript, and Tailwind CSS.
+A modern React weather dashboard app with city search, weather details, forecast, hourly data, weather alerts, and a weather map.
 
 ## Features
-
-- Clean, modern UI with subtle animations
-- Current weather display
+- City search with suggestions (OpenWeatherMap Geocoding API)
+- Current weather details
 - 5-day forecast
-- Location search
-- Responsive design
-- Beautiful gradients and glassmorphism effects
+- Hourly forecast
+- Weather alerts (if available)
+- Temperature unit toggle (°C/°F)
+- Weather map
+- Clean, modern UI with Tailwind CSS
 
-## Getting Started
+## Setup Instructions
 
-### Prerequisites
+1. **Clone or copy this folder to your machine.**
+2. **Create a `.env` file in the root of the project (next to `package.json`):**
+   ```
+   REACT_APP_WEATHER_API_KEY=your_openweathermap_api_key
+   REACT_APP_OPENWEATHER_API_KEY=your_openweathermap_api_key
+   ```
+   You can get a free API key from https://home.openweathermap.org/users/sign_up
 
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository
-2. Install dependencies:
-   ```bash
+3. **Install dependencies:**
+   ```sh
    npm install
    ```
-3. Start the development server:
-   ```bash
+
+4. **Start the development server:**
+   ```sh
    npm start
    ```
+   The app will open at http://localhost:3000
 
-The app will open in your default browser at `http://localhost:3000`.
+## Notes
+- Always run `npm start` from inside this project folder.
+- If you change the `.env` file, restart the server.
+- For any issues, check the browser console and terminal for errors.
 
 ## Customization
 
