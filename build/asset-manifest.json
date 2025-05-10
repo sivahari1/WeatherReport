@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/WeatherDashBoard/static/css/main.bec5bb23.css",
+    "main.js": "/WeatherDashBoard/static/js/main.ab6e4e18.js",
+    "index.html": "/WeatherDashBoard/index.html",
+    "main.bec5bb23.css.map": "/WeatherDashBoard/static/css/main.bec5bb23.css.map",
+    "main.ab6e4e18.js.map": "/WeatherDashBoard/static/js/main.ab6e4e18.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bec5bb23.css",
+    "static/js/main.ab6e4e18.js"
+  ]
+}
