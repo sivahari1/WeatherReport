@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { WeatherData, getCurrentWeather } from '../services/weatherService';
 import Clock from './Clock';
 import AnimatedWeather from './AnimatedWeather';
+import { useLanguage } from '../context/LanguageContext';
 
 interface WeatherCardProps {
   city: string;
@@ -15,6 +16,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate, units }) 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState<string>('');
+  const { t } = useLanguage();
+  const tempUnit = units === 'metric' ? 'C' : 'F';
+  const windUnit = units === 'metric' ? 'm/s' : 'mph';
 
   // Update time every second
   useEffect(() => {
@@ -125,7 +129,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate, units }) 
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-2xl font-semibold text-gray-800">
-            {weather.city}, {weather.country}
+            <span className="font-medium text-gray-600 mr-2">{typeof t('location') === 'string' ? t('location') + ':' : ''}</span>{weather.city}, {weather.country}
           </h2>
           <div className="flex items-center gap-2 text-gray-500">
             <p>{new Date().toLocaleDateString()}</p>
@@ -155,9 +159,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate, units }) 
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-5xl font-light text-gray-800"
+            className="text-5xl font-light text-gray-900 drop-shadow"
           >
-            {weather.temp}°{units === 'metric' ? 'C' : 'F'}
+            {weather.temp}°{tempUnit}
           </motion.div>
         </div>
       </div>
@@ -171,17 +175,17 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ city, onTempUpdate, units }) 
           transition={{ delay: 0.4 }}
           className="mt-6 grid grid-cols-2 gap-4 text-sm text-gray-500"
         >
-          <div className="bg-white/20 rounded-lg p-3">
-            <span className="font-medium">Feels like:</span> {weather.feels_like}°{units === 'metric' ? 'C' : 'F'}
+          <div className="bg-white/80 rounded-lg p-3 text-gray-800">
+            <span className="font-medium">{t('feelsLike')}:</span> {weather.feels_like}°{tempUnit}
           </div>
           <div className="bg-white/20 rounded-lg p-3">
-            <span className="font-medium">Humidity:</span> {weather.humidity}%
+            <span className="font-medium">{t('humidity')}:</span> {weather.humidity}%
           </div>
           <div className="bg-white/20 rounded-lg p-3">
-            <span className="font-medium">Wind:</span> {Math.round(weather.wind_speed * 3.6)} {units === 'metric' ? 'km/h' : 'mph'}
+            <span className="font-medium">{typeof t('wind') === 'string' ? t('wind') + ':' : ''}</span> {Math.round(weather.wind_speed * 3.6)} {windUnit}
           </div>
           <div className="bg-white/20 rounded-lg p-3">
-            <span className="font-medium">Pressure:</span> {weather.pressure} hPa
+            <span className="font-medium">{t('pressure')}:</span> {weather.pressure} hPa
           </div>
         </motion.div>
       </div>

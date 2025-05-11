@@ -87,14 +87,14 @@ const Forecast: React.FC<ForecastProps> = ({ city, units }) => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 + index * 0.1 }}
             whileHover={{ scale: 1.05 }}
-            className="flex-shrink-0 w-24 bg-white/20 rounded-xl p-4 text-center backdrop-blur-sm"
+            className="flex-shrink-0 w-24 bg-white/80 rounded-xl p-4 text-center backdrop-blur-sm"
           >
             <p className="text-gray-600 font-medium">{day.date}</p>
             <motion.div
               initial={{ scale: 0.5, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-              className="text-3xl my-2"
+              className="text-3xl my-2 text-gray-900 drop-shadow"
             >
               {day.icon}
             </motion.div>

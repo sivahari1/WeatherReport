@@ -103,7 +103,7 @@ export const getCurrentWeather = async (city: string, units: 'metric' | 'imperia
   }
 };
 
-export const getHourlyForecast = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<HourlyForecast[]> => {
+export const getHourlyForecast = async (city: string, units: 'metric' | 'imperial' = 'metric'): Promise<any[]> => {
   try {
     const response = await axios.get(`${BASE_URL}/forecast`, {
       params: {
@@ -114,14 +114,14 @@ export const getHourlyForecast = async (city: string, units: 'metric' | 'imperia
     });
 
     return response.data.list.slice(0, 24).map((forecast: any) => ({
-      time: new Date(forecast.dt * 1000).toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }),
-      temp: Math.round(forecast.main.temp),
-      description: forecast.weather[0].description,
-      icon: getWeatherIcon(forecast.weather[0].icon),
-      wind_speed: forecast.wind.speed,
-      wind_direction: forecast.wind.deg,
-      humidity: forecast.main.humidity,
-      precipitation: forecast.pop * 100, // Probability of precipitation
+      dt: forecast.dt,
+      temp: forecast.main.temp,
+      weather: [
+        {
+          icon: forecast.weather[0].icon,
+          description: forecast.weather[0].description,
+        }
+      ]
     }));
   } catch (error) {
     console.error('Error fetching hourly forecast:', error);

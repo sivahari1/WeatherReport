@@ -8,6 +8,8 @@ import HourlyForecast from './components/HourlyForecast';
 import UnitToggle from './components/UnitToggle';
 import { getCurrentWeather, getForecast, getHourlyForecast, getLocationWeather, WeatherData } from './services/weatherService';
 import WeatherTrivia from './components/WeatherTrivia';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
+import LanguageSelector from './components/LanguageSelector';
 
 function getBgGradientByTemp(temp: number, units: 'metric' | 'imperial') {
   if (units === 'metric') {
@@ -46,7 +48,7 @@ function getBgGradientByTemp(temp: number, units: 'metric' | 'imperial') {
   }
 }
 
-const App: React.FC = () => {
+const WeatherApp: React.FC = () => {
   const [city, setCity] = useState('Hyderabad');
   const [currentTemp, setCurrentTemp] = useState<number>(20);
   const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
@@ -54,6 +56,7 @@ const App: React.FC = () => {
   const [hourlyForecast, setHourlyForecast] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t, language, setLanguage } = useLanguage();
 
   const fetchWeatherData = async (location: string | { lat: number; lon: number }) => {
     setLoading(true);
@@ -158,9 +161,13 @@ const App: React.FC = () => {
           className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
         >
           <h1 className="text-4xl font-light text-gray-800 text-center md:text-left">
-            Weather Dashboard
+            {t('currentWeather')}
           </h1>
           <div className="flex items-center justify-center gap-4">
+            <LanguageSelector
+              currentLanguage={language}
+              onLanguageChange={setLanguage}
+            />
             <UnitToggle units={units} onToggle={handleUnitToggle} />
             <button
               onClick={handleLocationClick}
@@ -234,6 +241,14 @@ const App: React.FC = () => {
         </motion.footer>
       </motion.div>
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <LanguageProvider>
+      <WeatherApp />
+    </LanguageProvider>
   );
 };
 

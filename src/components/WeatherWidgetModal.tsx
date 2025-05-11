@@ -6,7 +6,7 @@ interface WeatherWidgetModalProps {
   onClose: () => void;
 }
 
-const defaultCity = 'London';
+const defaultCity = 'Hyderabad';
 
 const WeatherWidgetModal: React.FC<WeatherWidgetModalProps> = ({ isOpen, onClose }) => {
   const [city, setCity] = useState(defaultCity);
