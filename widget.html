@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Widget</title>
+  <style>
+    body { margin: 0; background: transparent; font-family: sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module">
+    import React from "https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js";
+    import ReactDOM from "https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js";
+    // We'll use a CDN version for the widget for simplicity
+    // Parse query params
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+    const city = getQueryParam('city') || 'Hyderabad';
+    const units = getQueryParam('units') || 'metric';
+    // Minimal widget
+    function Widget() {
+      const [data, setData] = React.useState(null);
+      const [loading, setLoading] = React.useState(true);
+      const [error, setError] = React.useState(null);
+      React.useEffect(() => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=${units}&appid=cdbfc349372b82b26c227de9f0f697a0`)
+          .then(r => r.json())
+          .then(d => {
+            setData(d);
+            setLoading(false);
+          })
+          .catch(e => {
+            setError('Failed to load weather');
+            setLoading(false);
+          });
+      }, [city, units]);
+      if (loading) return React.createElement('div', {style: {textAlign: 'center'}}, 'Loading...');
+      if (error || !data || data.cod !== 200) return React.createElement('div', {style: {color: 'red', textAlign: 'center'}}, error || 'No data');
+      return React.createElement('div', {style: {background: 'rgba(255,255,255,0.9)', borderRadius: 8, padding: 12, width: 250, margin: 'auto', textAlign: 'center', color: '#222', fontFamily: 'inherit'}},
+        React.createElement('div', {style: {fontWeight: 'bold', marginBottom: 4}}, `${data.name}, ${data.sys.country}`),
+        React.createElement('div', {style: {fontSize: 32, marginBottom: 4}}, '🌡️'),
+        React.createElement('div', {style: {fontSize: 24, fontWeight: 'bold', marginBottom: 4}}, `${Math.round(data.main.temp)}°${units === 'metric' ? 'C' : 'F'}`),
+        React.createElement('div', {style: {textTransform: 'capitalize', fontSize: 14, marginBottom: 4}}, data.weather[0].description),
+        React.createElement('div', {style: {fontSize: 12, marginTop: 6}}, `💧 ${data.main.humidity}%  💨 ${Math.round(data.wind.speed * 3.6)}${units === 'metric' ? 'km/h' : 'mph'}`)
+      );
+    }
+    ReactDOM.render(React.createElement(Widget), document.getElementById('root'));
+  </script>
+</body>
+</html> 
