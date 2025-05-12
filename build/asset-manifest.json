@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/WeatherDashBoard/static/css/main.fcc3999c.css",
-    "main.js": "/WeatherDashBoard/static/js/main.04fb495b.js",
-    "index.html": "/WeatherDashBoard/index.html",
-    "main.fcc3999c.css.map": "/WeatherDashBoard/static/css/main.fcc3999c.css.map",
-    "main.04fb495b.js.map": "/WeatherDashBoard/static/js/main.04fb495b.js.map"
+    "main.css": "/WeatherReport/static/css/main.78fc62a1.css",
+    "main.js": "/WeatherReport/static/js/main.72e8f852.js",
+    "index.html": "/WeatherReport/index.html",
+    "main.78fc62a1.css.map": "/WeatherReport/static/css/main.78fc62a1.css.map",
+    "main.72e8f852.js.map": "/WeatherReport/static/js/main.72e8f852.js.map"
   },
   "entrypoints": [
-    "static/css/main.fcc3999c.css",
-    "static/js/main.04fb495b.js"
+    "static/css/main.78fc62a1.css",
+    "static/js/main.72e8f852.js"
   ]
 }

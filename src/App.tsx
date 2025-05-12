@@ -82,6 +82,24 @@ const WeatherApp: React.FC = () => {
     }
   };
 
+  // Automatically request geolocation on initial load
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeatherData({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+        },
+        (error) => {
+          // Optionally set an error state or show a message
+        }
+      );
+    }
+    // eslint-disable-next-line
+  }, []);
+
   useEffect(() => {
     fetchWeatherData(city);
   }, [units]);
@@ -163,7 +181,7 @@ const WeatherApp: React.FC = () => {
           <h1 className="text-4xl font-light text-gray-800 text-center md:text-left">
             {t('currentWeather')}
           </h1>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-col w-full gap-2 sm:flex-row sm:items-center sm:justify-center sm:gap-4">
             <LanguageSelector
               currentLanguage={language}
               onLanguageChange={setLanguage}
